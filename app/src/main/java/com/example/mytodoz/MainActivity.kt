@@ -1,6 +1,6 @@
 package com.example.mytodoz
 
-import NoteUseCases
+import com.example.mytodoz.domain.usecase.NoteUseCases
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent

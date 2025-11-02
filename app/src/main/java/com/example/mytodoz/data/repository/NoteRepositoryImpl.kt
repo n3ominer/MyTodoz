@@ -36,32 +36,4 @@ class NoteRepositoryImpl(
     override fun update(updateNote: Note) {
 
     }
-
-    /*suspend fun getNotes(): List<NoteDto> {
-        return this.remote.fetchNotes()
-    }
-
-
-    // TODO: Replace by API calls
-    fun getAllNotes(): List<Note> =  notes
-
-    fun getById(id: Int): Note? = notes.find { it.id == id }
-
-    fun addNote(note: Note) = notes.add(note)
-
-    fun deleteNote(note: Note): Boolean{
-        notes.removeIf {
-            it.id == note.id
-        }
-
-        return true
-    }
-
-    fun update(updateNote: Note) {
-        val index = notes.indexOfFirst { it.id == updateNote.id }
-        if (index >= 0) {
-            notes[index] = updateNote
-        }
-    }
-    */
 }

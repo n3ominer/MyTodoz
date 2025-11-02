@@ -33,5 +33,5 @@ fun SettingScreen(
 @Preview
 @Composable
 fun SettingScreenPreview() {
-    SettingScreen(){}
+    SettingScreen{}
 }

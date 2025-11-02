@@ -1,10 +1,9 @@
 package com.example.mytodoz.viewModels
 
-import NoteUseCases
+import com.example.mytodoz.domain.usecase.NoteUseCases
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mytodoz.data.mapper.mapNoteDtoToNote
-import com.example.mytodoz.data.remote.models.NoteDto
 import com.example.mytodoz.domain.models.Note
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -5,5 +5,4 @@ data class NoteDto(
     val title: String,
     val content: String,
     val colorIndex: Int = 0
-) {
-}
+)

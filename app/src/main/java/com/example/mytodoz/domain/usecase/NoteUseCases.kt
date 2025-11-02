@@ -1,5 +1,4 @@
-import com.example.mytodoz.domain.usecase.GetAllNotesUseCase
-import com.example.mytodoz.domain.usecase.GetNoteByIdUseCase
+package com.example.mytodoz.domain.usecase
 
 /**
  * Aggregation of all note-related use cases.
