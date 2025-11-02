@@ -1,45 +1,56 @@
 package com.example.mytodoz.viewModels
 
-import NoteUseCases
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.mytodoz.data.mapper.mapNoteDtoToNote
-import com.example.mytodoz.data.remote.models.NoteDto
+import com.example.mytodoz.data.repository.NoteRepositoryImpl
 import com.example.mytodoz.domain.models.Note
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
+import com.example.mytodoz.domain.repository.NoteRepository
+import kotlin.random.Random
 
 class NotesViewModel(
-    private val useCases: NoteUseCases
+    private val repo: NoteRepository = NoteRepositoryImpl()
 ): ViewModel() {
 
-    // ============================================================
-    // ==================== REMOTE DATA ============================
-    // ============================================================
-    private val _remoteNotes = MutableStateFlow<List<Note>>(emptyList())
-    val remoteNotes = _remoteNotes.asStateFlow()
+    // instance --------------------> .addAll()
+    private val _notes = mutableStateListOf<Note>().apply { /*it.*/ addAll(repo.getAllNotes())}
+    val notes: List<Note> = _notes // Cast le mutable state list of ====> list
 
-    private val _error = MutableStateFlow<String?>(null)
-    val error = _error.asStateFlow()
 
-    init {
-        fetchNotesFromRepo()
+    // ============================================================
+    // ==================== MOCK DATA ============================
+    // ============================================================
+
+
+    // Add query state
+    // Add filter function
+    fun addSampleNote() {
+        val id = (Random.nextInt(1000) + _notes.size + 1)
+        val note = Note(
+            id = id,
+            title = "New Note #$id",
+            content = "This is the content of note $id",
+            colorIndex = Random.nextInt(0, 3)
+        )
+        repo.addNote(note)
+        _notes.add(0, note) // Update state
     }
 
-    fun fetchNotesFromRepo() {
-        viewModelScope.launch {
-            try {
-                _remoteNotes.value = useCases.getAllNotes().map {
-                    mapNoteDtoToNote(it)
-                }
-            } catch (e: Exception) {
-                _error.value = "Erreur de chargement des données. Error: ${e.message}"
-            }
+    fun getNoteById(id: Int): Note? = repo.getById(id)
+
+    fun deleteNote(note: Note) {
+        val isSuccess = repo.deleteNote(note)
+        if (isSuccess) {
+            _notes.removeIf { it.id == note.id } // Update state
         }
     }
 
-    
-    fun getNoteById(id: Int): Note? = _remoteNotes.value.find { it.id == id }
+    fun updateNote(note: Note) {
+        val index = notes.indexOfFirst { it.id == note.id }
+        if (index >= 0) {
+            repo.update(_notes[index])
+            // Si l'update est un succès
+            _notes[index] = note // Update state
+        }
+    }
 
 }

@@ -35,7 +35,7 @@ fun HomeScreen(
     onOpenSettings: () -> Unit,
     folderName: String = "My notes",
 ) {
-    val remoteNotes by viewModel.remoteNotes.collectAsState()
+    val remoteNotes = viewModel.notes
     Surface {
         Box(
             modifier = modifier.fillMaxSize(),
@@ -82,7 +82,11 @@ fun HomeScreen(
                 }
             }
 
-            BottomBar({},{}, onOpenSettings)
+            BottomBar(
+                {},
+                { viewModel.addSampleNote() },
+                onOpenSettings
+            )
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.example.mytodoz.domain.repository
 
-import com.example.mytodoz.data.remote.models.NoteDto
 import com.example.mytodoz.domain.models.Note
 
 /**
@@ -8,9 +7,9 @@ import com.example.mytodoz.domain.models.Note
  * Define the contract here so the app depends on the interface (clean architecture).
  */
 interface NoteRepository {
-    suspend fun getAllNotes(): List<NoteDto>
-    suspend fun getById(id: Int): Note?
-    fun addNote(note: Note)
+    fun getAllNotes(): List<Note>
+    fun getById(id: Int): Note?
+    fun addNote(note: Note): Boolean
     fun deleteNote(note: Note): Boolean
     fun update(updateNote: Note)
 }

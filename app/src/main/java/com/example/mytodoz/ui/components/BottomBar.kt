@@ -33,7 +33,8 @@ fun BottomBar(
 ) {
     //Surface() {
         Box(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(16.dp)
                 .background(Color(0x00FFFFFF)),
         ) {
@@ -47,7 +48,7 @@ fun BottomBar(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-                IconButton(onClick = onHome) {
+                IconButton(onClick = { onHome() }) {
                     Icon(
                         Icons.Outlined.Home,
                         tint = Color(0xFFAF97FF),
@@ -57,12 +58,13 @@ fun BottomBar(
                 }
 
                 Box(
-                    modifier = Modifier.size(56.dp)
+                    modifier = Modifier
+                        .size(56.dp)
                         .clip(CircleShape)
                         .background(Color(0xFF4A0CF8)),
                     contentAlignment = Alignment.Center
                 ) {
-                    IconButton(onClick = onAdd) {
+                    IconButton(onClick = { onAdd() }) {
                         Icon(
                             Icons.Outlined.Add,
                             tint = Color.White,
