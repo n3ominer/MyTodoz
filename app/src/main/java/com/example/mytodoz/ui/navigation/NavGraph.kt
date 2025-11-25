@@ -10,11 +10,14 @@ import com.example.mytodoz.ui.screens.HomeScreen
 import com.example.mytodoz.ui.screens.NoteDetailScreen
 import com.example.mytodoz.ui.screens.SettingScreen
 import com.example.mytodoz.viewModels.NotesViewModel
-
+import com.example.mytodoz.viewModels.SettingsViewModel
 
 
 @Composable
-fun NavGraph(viewModel: NotesViewModel){
+fun NavGraph(
+    viewModel: NotesViewModel,
+    settingsViewModel: SettingsViewModel
+){
 
     // STATE
     val navController = rememberNavController()
@@ -54,6 +57,7 @@ fun NavGraph(viewModel: NotesViewModel){
         // TODO: FInish settings screen implementation
         composable(route = Destinations.PROFILE) {
             SettingScreen(
+                settingsViewModel,
                 onBack = { navController.popBackStack() }
             )
         }
