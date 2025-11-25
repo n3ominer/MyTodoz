@@ -15,7 +15,7 @@ fun SettingScreen(
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = Color.Red
+        color = Color.Gray
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
