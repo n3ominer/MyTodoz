@@ -2,9 +2,13 @@ package com.example.mytodoz.viewModels
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.mytodoz.data.repository.NoteRepositoryImpl
 import com.example.mytodoz.domain.models.Note
 import com.example.mytodoz.domain.repository.NoteRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 class NotesViewModel(
@@ -12,14 +16,25 @@ class NotesViewModel(
 ): ViewModel() {
 
     // instance --------------------> .addAll()
-    private val _notes = mutableStateListOf<Note>().apply { /*it.*/ addAll(repo.getAllNotes())}
+    private val _notes = mutableStateListOf<Note>().apply { /*it.*/ addAll(emptyList())}
     val notes: List<Note> = _notes // Cast le mutable state list of ====> list
 
+    private val _remoteNotes = MutableStateFlow<List<Note>>(emptyList())
+    val remoteNotes = _remoteNotes.asStateFlow()
 
     // ============================================================
     // ==================== MOCK DATA ============================
     // ============================================================
 
+    init {
+        this.fetchAllNotes()
+    }
+
+     fun fetchAllNotes() {
+        viewModelScope.launch {
+            _remoteNotes.value =  repo.getAllNotes()
+        }
+    }
 
     // Add query state
     // Add filter function

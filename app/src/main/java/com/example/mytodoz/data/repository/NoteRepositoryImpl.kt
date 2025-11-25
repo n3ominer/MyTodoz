@@ -1,12 +1,17 @@
 package com.example.mytodoz.data.repository
 
+import com.example.mytodoz.data.remote.NoteRemoteDataSource
 import com.example.mytodoz.domain.repository.NoteRepository
 import com.example.mytodoz.domain.models.Note
 
-class NoteRepositoryImpl() : NoteRepository {
+class NoteRepositoryImpl(
+    val dataSource: NoteRemoteDataSource = NoteRemoteDataSource(),
+
+) : NoteRepository {
+
 
     private val notes = mutableListOf(
-        Note(1, "Hello World!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit...", colorIndex = 0),
+        Note(0, "Hello World!", "Lorem ipsum dolor sit amet, consectetur adipiscing elit...", colorIndex = 0),
         Note(2, "Work Meeting Notes", "Discussed progress on project X, deadlines, and...", colorIndex = 1),
         Note(3, "Class Notes", "Lecture on Biology: DNA structure and replication...", colorIndex = 2),
         Note(4, "Project Plan", "Research, design, implementation, testing, deployment", colorIndex = 1),
@@ -18,8 +23,14 @@ class NoteRepositoryImpl() : NoteRepository {
         Note(5, "To-Do List", "Finish homework, call the dentist, buy groceries...", colorIndex = 2),
     )
 
-    override fun getAllNotes(): List<Note> {
-        return notes
+    override suspend fun getAllNotes(): List<Note> {
+        return dataSource.fetchNotes().map { dto ->
+            Note(
+                id = dto.id,
+                title = dto.title,
+                content = dto.content,
+            )
+        }
     }
 
     override fun getById(id: Int): Note? = notes.find { it.id == id }
