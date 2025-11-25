@@ -1,12 +1,13 @@
 package com.example.mytodoz.data.repository
 
+import com.example.mytodoz.data.db.dao.NotesDao
 import com.example.mytodoz.data.remote.NoteRemoteDataSource
 import com.example.mytodoz.domain.repository.NoteRepository
 import com.example.mytodoz.domain.models.Note
 
 class NoteRepositoryImpl(
-    val dataSource: NoteRemoteDataSource = NoteRemoteDataSource(),
-
+    val noteDao: NotesDao,
+    val dataSource: NoteRemoteDataSource = NoteRemoteDataSource()
 ) : NoteRepository {
 
 
@@ -24,6 +25,14 @@ class NoteRepositoryImpl(
     )
 
     override suspend fun getAllNotes(): List<Note> {
+        // Fetch data
+
+        // Save data in DB through DAO
+
+        // If fetch fail ---> return data from DAO if exist
+
+        // Return Data to VM
+
         return dataSource.fetchNotes().map { dto ->
             Note(
                 id = dto.id,

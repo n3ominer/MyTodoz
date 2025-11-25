@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.mytodoz.data.datastore.DataStoreManager
+import com.example.mytodoz.data.db.AppDataBase
+import com.example.mytodoz.data.db.provider.DataBaseProvider
 import com.example.mytodoz.data.repository.NoteRepositoryImpl
 import com.example.mytodoz.ui.navigation.NavGraph
 import com.example.mytodoz.ui.theme.MyTodozTheme
@@ -14,8 +16,8 @@ import com.example.mytodoz.viewModels.SettingsViewModel
 
 class MainActivity : ComponentActivity() {
 
-    private val notesRepository: NoteRepositoryImpl = NoteRepositoryImpl()
-
+    private lateinit var db: AppDataBase
+    private lateinit var notesRepository: NoteRepositoryImpl
     private val viewModel: NotesViewModel = NotesViewModel(repo = notesRepository)
 
     private lateinit var dataStoreManager: DataStoreManager
@@ -24,6 +26,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        db = DataBaseProvider.provide(this)
+        notesRepository = NoteRepositoryImpl(noteDao = db.notesDao())
         dataStoreManager = DataStoreManager(this)
         settingVm = SettingsViewModel(dataStoreManager)
 
