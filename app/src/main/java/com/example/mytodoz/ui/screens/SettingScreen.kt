@@ -11,6 +11,7 @@ import com.example.mytodoz.ui.components.TopBar
 
 @Composable
 fun SettingScreen(
+    // Add setting viewmodel + injection in  NavGraph
     onBack: () -> Unit
 ) {
     Surface(
@@ -25,6 +26,8 @@ fun SettingScreen(
                 showBackButton = true,
                 onBackClick = onBack
             ) { }
+
+            // Add switch + handle state of data
         }
     }
 }
