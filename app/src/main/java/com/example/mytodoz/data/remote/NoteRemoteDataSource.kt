@@ -2,16 +2,17 @@ package com.example.mytodoz.data.remote
 
 import com.example.mytodoz.data.remote.services.NoteApiService
 import com.example.mytodoz.network.RetrofitInstance
+import retrofit2.Retrofit
 
-class NoteRemoteDataSource {
-    private val api = RetrofitInstance.api
-
+open class NoteRemoteDataSource(
+    api: Retrofit = RetrofitInstance.api
+) {
     private val notesService = api.create(NoteApiService::class.java)
 
     // HTTP Call to get a list of notes
-    suspend fun fetchNotes() = notesService.getAllNotes()
+    open suspend fun fetchNotes() = notesService.getAllNotes()
 
     // HTTP Call to get a note by its id
-    suspend fun fetchNoteById(id: Int) = notesService.getNoteById(id)
+    open suspend fun fetchNoteById(id: Int) = notesService.getNoteById(id)
 
 }
