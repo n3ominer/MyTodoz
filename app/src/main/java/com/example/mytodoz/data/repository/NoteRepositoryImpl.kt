@@ -6,12 +6,20 @@ import com.example.mytodoz.domain.repository.NoteRepository
 import com.example.mytodoz.domain.models.Note
 
 class NoteRepositoryImpl(
+    // Add DAO
     val remote: NoteRemoteDataSource = NoteRemoteDataSource()
 ) : NoteRepository {
 
 
 
     override suspend fun getAllNotes(): List<NoteDto> {
+        // Fetch data --> 500
+        // Save data in DB
+
+        // ---> If fetch data is empty : check in DB
+
+        // Return data
+
         return remote.fetchNotes()
     }
 
