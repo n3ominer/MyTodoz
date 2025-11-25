@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 class NotesViewModel(
-    private val repo: NoteRepository = NoteRepositoryImpl()
+    private val repo: NoteRepository
 ): ViewModel() {
 
     // instance --------------------> .addAll()

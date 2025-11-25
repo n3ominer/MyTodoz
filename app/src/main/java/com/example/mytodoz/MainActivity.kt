@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var db: AppDataBase
     private lateinit var notesRepository: NoteRepositoryImpl
-    private val viewModel: NotesViewModel = NotesViewModel(repo = notesRepository)
+    private lateinit var notesVm: NotesViewModel
 
     private lateinit var dataStoreManager: DataStoreManager
     private lateinit var settingVm: SettingsViewModel
@@ -30,12 +30,13 @@ class MainActivity : ComponentActivity() {
         notesRepository = NoteRepositoryImpl(noteDao = db.notesDao())
         dataStoreManager = DataStoreManager(this)
         settingVm = SettingsViewModel(dataStoreManager)
+        notesVm = NotesViewModel(repo = notesRepository)
 
         setContent {
             MyTodozTheme {
 
                 NavGraph(
-                    viewModel = viewModel,
+                    viewModel = notesVm,
                     settingsViewModel = settingVm
                 )
             }
