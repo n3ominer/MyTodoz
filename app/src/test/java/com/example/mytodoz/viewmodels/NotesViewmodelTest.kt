@@ -8,6 +8,8 @@ import com.example.mytodoz.domain.usecase.GetAllNotesUseCase
 import com.example.mytodoz.domain.usecase.GetNoteByIdUseCase
 import com.example.mytodoz.domain.usecase.NoteUseCases
 import com.example.mytodoz.viewModels.NotesViewModel
+import junit.framework.Assert.assertNotNull
+import junit.framework.Assert.assertTrue
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -29,7 +31,13 @@ class FakeRepoSuccess(): NoteRepository {
     override fun update(updateNote: Note) {}
 }
 
-// FakeRepoFailure
+class FakeRepoFailure(): NoteRepository {
+    override suspend fun getAllNotes(): List<NoteDto> { throw RuntimeException("ERROR") }
+    override suspend fun getById(id: Int): Note? = null
+    override fun addNote(note: Note) {}
+    override fun deleteNote(note: Note): Boolean  = false
+    override fun update(updateNote: Note) {}
+}
 
 
 class NotesViewmodelTest {
@@ -63,6 +71,30 @@ class NotesViewmodelTest {
         // Assert
         assertEquals(3, notes.size )
         assertEquals("Note 1", notes[0].title)
+    }
+
+
+    @Test
+    fun `fetchNotesFromRepo should throw error and create an error`() = runTest {
+        // Arrange
+        // 1- Create Fake repository that implements NoteRepository interface ✅
+        val fakeRepoFailure = FakeRepoFailure()
+        // 2- Create GetAllNotesUseCase instance ✅
+        // 3- Create NoteUseCases ✅
+        val useCases = buildUseCases(fakeRepoFailure)
+
+        // 4- Create NotesViewModel
+        val noteVm = NotesViewModel(useCases) // init()
+
+        advanceUntilIdle()
+
+        // ACT
+        val expectedErrorMessage = "Erreur de chargement des données. Error: ERROR"
+
+        // Assert
+        assertTrue(noteVm.remoteNotes.value.isEmpty())
+        assertNotNull(noteVm.error)
+        assertEquals(expectedErrorMessage, noteVm.error.value)
     }
 
 }
