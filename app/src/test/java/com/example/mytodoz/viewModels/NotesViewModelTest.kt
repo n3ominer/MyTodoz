@@ -10,6 +10,8 @@ class NotesViewModelTest {
 
     // Setup Asyn behavior
 
+    // create UseCases
+
     // Write test for NoteVm fetchNotesFromRepo()
 
   
