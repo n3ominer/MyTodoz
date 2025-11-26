@@ -1,5 +1,6 @@
 package com.example.mytodoz.viewmodels
 
+import com.example.mytodoz.MainDispatcherRule
 import com.example.mytodoz.data.remote.models.NoteDto
 import com.example.mytodoz.domain.models.Note
 import com.example.mytodoz.domain.repository.NoteRepository
@@ -8,6 +9,10 @@ import com.example.mytodoz.domain.usecase.GetNoteByIdUseCase
 import com.example.mytodoz.domain.usecase.NoteUseCases
 import com.example.mytodoz.viewModels.NotesViewModel
 import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
+import org.junit.Rule
 import org.junit.Test
 
 class FakeRepoSuccess(): NoteRepository {
@@ -29,13 +34,17 @@ class FakeRepoSuccess(): NoteRepository {
 
 class NotesViewmodelTest {
 
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
+
     private fun buildUseCases(repo: NoteRepository) = NoteUseCases(
         getAllNotes = GetAllNotesUseCase(repo),
         getNoteById = GetNoteByIdUseCase(repo)
     )
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `fetchNotesFromRepo should populate remoteNotes`() {
+    fun `fetchNotesFromRepo should populate remoteNotes`() = runTest {
         // Arrange
         // 1- Create Fake repository that implements NoteRepository interface ✅
         val fakeRepoSuccess = FakeRepoSuccess()
@@ -46,12 +55,14 @@ class NotesViewmodelTest {
         // 4- Create NotesViewModel
         val noteVm = NotesViewModel(useCases) // init()
 
+        advanceUntilIdle()
+
         // Act
         val notes = noteVm.remoteNotes.value
 
         // Assert
-        assertEquals(notes.size, 3)
-        assertEquals(notes[1].title, "Note 1")
+        assertEquals(3, notes.size )
+        assertEquals("Note 1", notes[0].title)
     }
 
 }
