@@ -60,7 +60,7 @@ class NotesViewModelTest {
 
 
     @Test
-    fun `fetchNotesFromRepo func should successfully populate noteRepo`() = runTest{
+    fun `fetchNotesFromRepo func should successfully populate noteRepo`() = runTest {
         // Arrange
         val repoSuccess = FakeRepoSuccess()
         val useCases = buildUseCases(repoSuccess)
