@@ -8,6 +8,9 @@ import com.example.mytodoz.domain.repository.NoteRepository
 import com.example.mytodoz.domain.usecase.GetAllNotesUseCase
 import com.example.mytodoz.domain.usecase.GetNoteByIdUseCase
 import com.example.mytodoz.domain.usecase.NoteUseCases
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
 
 import org.junit.Assert.*
 import org.junit.Rule
@@ -42,7 +45,7 @@ class FakeRepoFailure: NoteRepository {
 }
 
 
-@OptIn(ExperimentalComposeApi::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class NotesViewModelTest {
 
     // Setup Async behavior
@@ -55,12 +58,9 @@ class NotesViewModelTest {
         getNoteById = GetNoteByIdUseCase(repo)
     )
 
-    // Write test for NoteVm fetchNotesFromRepo()
-
-    // Test de la fun fetchNotesFromRepo en cas de succes
 
     @Test
-    fun `fetchNotesFromRepo func should successfully populate noteRepo`() {
+    fun `fetchNotesFromRepo func should successfully populate noteRepo`() = runTest{
         // Arrange
         val repoSuccess = FakeRepoSuccess()
         val useCases = buildUseCases(repoSuccess)
