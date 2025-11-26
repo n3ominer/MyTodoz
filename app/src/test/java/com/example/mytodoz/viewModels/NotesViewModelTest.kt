@@ -72,6 +72,7 @@ class NotesViewModelTest {
 
         // Assert
         assertEquals(notes.size, 3)
+        assertEquals(notes[0].title, "Note 1")
     }
 
     // Test de la fun fetchNotesFromRepo en cas de failure
